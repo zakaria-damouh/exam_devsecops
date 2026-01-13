@@ -26,7 +26,8 @@ def ping():
     # Injection de commande (shell=True)
     result = subprocess.check_output(
     f"ping -c 1 {host}",
-    shell=True
+    stderr= subprocess.STDOUT,
+    text= True,
     )
     return result
 @app.route("/hello")
