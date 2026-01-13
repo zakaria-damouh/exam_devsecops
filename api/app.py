@@ -1,12 +1,17 @@
 from flask import Flask, request
 import hashlib
 import subprocess
+import bcrypt
 app = Flask(__name__)
 # Mot de passe en dur (mauvaise pratique)
 ADMIN_PASSWORD = "123456"
 # Cryptographie faible (MD5)
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+
+    text_bytes = password.encode()  
+    hashed = bcrypt.hashpw(text_bytes, bcrypt.gensalt())
+    return {"hash": hashed.decode()}
+    # return hashlib.md5(password.encode()).hexdigest()
 @app.route("/login")
 def login():
     username = request.args.get("username")
